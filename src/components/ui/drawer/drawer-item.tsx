@@ -26,7 +26,7 @@ function DrawerActionButton({ label, isDisabled, isPending, variant = 'default',
 }
 
 /**
- * 单个命令式 Drawer：受控 shadcn Sheet，退出动画结束后再从队列移除。
+ * 单个命令式 Drawer：受控 shadcn Sheet，退出动画结束后再移除。
  */
 export function DrawerItem({ item }: DrawerItemProps) {
   const { t } = useTranslation();

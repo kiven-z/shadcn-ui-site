@@ -16,7 +16,7 @@ interface RunOverlayBeforeSureOptions<TOptions extends object> {
   id: string;
 }
 
-/** 按弹层 options 实例跟踪提交中状态，支持多弹层叠放 */
+/** 按弹层 options 实例跟踪提交中状态，防止同次确定重入 */
 const overlaySureInFlight = new WeakMap<object, boolean>();
 
 /**

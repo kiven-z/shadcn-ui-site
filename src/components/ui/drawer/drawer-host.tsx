@@ -7,7 +7,7 @@ import { router } from '@/router';
 
 /**
  * 全局 Drawer 宿主，与路由树并列挂在应用根上。
- * 订阅队列渲染各抽屉，并在客户端路由变化时清空 Drawer 栈。
+ * 订阅当前抽屉并渲染；客户端路由变化时清空。
  */
 export function DrawerHost() {
   const items = useDrawerStore((state) => state.items);

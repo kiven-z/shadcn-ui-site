@@ -36,7 +36,7 @@ function DialogActionButton({ label, isDisabled, isPending, variant = 'default',
 }
 
 /**
- * 单个命令式 Dialog：受控 shadcn Dialog，退出动画结束后再从队列移除。
+ * 单个命令式 Dialog：受控 shadcn Dialog，退出动画结束后再移除。
  */
 export function DialogItem({ item }: DialogItemProps) {
   const { t } = useTranslation();

@@ -7,7 +7,7 @@ import { router } from '@/router';
 
 /**
  * 全局 Dialog 宿主，与路由树并列挂在应用根上。
- * 订阅队列渲染各弹层，并在客户端路由变化时清空 Dialog 栈。
+ * 订阅当前弹层并渲染；客户端路由变化时清空。
  */
 export function DialogHost() {
   const items = useDialogStore((state) => state.items);
