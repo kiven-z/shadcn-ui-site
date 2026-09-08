@@ -40,11 +40,6 @@ export default defineConfig({
               priority: 20,
             },
             {
-              name: 'heroui-vendor',
-              test: /node_modules[\\/]@heroui[\\/]/,
-              priority: 15,
-            },
-            {
               name: 'vendor',
               test: /node_modules/,
               priority: 10,

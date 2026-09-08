@@ -3,12 +3,12 @@ export function LayoutFooter() {
     <footer className="flex w-full items-center justify-center py-3">
       <a
         className="flex items-center gap-1 text-current no-underline"
-        href="https://heroui.com?utm_source=heroui-site"
+        href="https://ui.shadcn.com"
         rel="noopener noreferrer"
         target="_blank"
       >
-        <span className="text-muted">Powered by</span>
-        <p className="text-accent">HeroUI</p>
+        <span className="text-muted-foreground">Powered by</span>
+        <p className="font-medium text-foreground">shadcn/ui</p>
       </a>
     </footer>
   );

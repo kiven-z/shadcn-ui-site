@@ -1,20 +1,15 @@
+import type { VariantProps } from 'class-variance-authority';
 import type { ReactNode } from 'react';
+import type { buttonVariants } from '@/components/ui/button';
 
-/** Drawer 滑出边，对应 HeroUI `Drawer.Content` 的 `placement` */
+/** Drawer 滑出边，对应 shadcn Sheet `side` */
 export type DrawerPlacement = 'right' | 'left' | 'top' | 'bottom';
 
 /** 关闭来源：`cancel` 取消按钮、`sure` 确定按钮、`close` 关闭钮 / 遮罩 / ESC */
 export type DrawerCloseCommand = 'cancel' | 'sure' | 'close';
 
-/** Drawer 底部按钮变体，对应 HeroUI Button */
-export type DrawerFooterButtonVariant =
-  | 'primary'
-  | 'secondary'
-  | 'tertiary'
-  | 'ghost'
-  | 'danger'
-  | 'danger-soft'
-  | 'outline';
+/** Drawer 底部按钮变体，对应 shadcn Button */
+export type DrawerFooterButtonVariant = NonNullable<VariantProps<typeof buttonVariants>['variant']>;
 
 /** Drawer 自定义底部按钮 */
 export interface DrawerFooterButton {
@@ -22,7 +17,7 @@ export interface DrawerFooterButton {
   variant?: DrawerFooterButtonVariant;
   isPending?: boolean;
   isDisabled?: boolean;
-  onPress?: () => void;
+  onClick?: () => void;
 }
 
 /** `beforeSure` 回调上下文 */
@@ -39,7 +34,7 @@ export interface DrawerOptions {
   content: ReactNode;
   /** 滑出边；默认 `right` */
   placement?: DrawerPlacement;
-  /** 传给 `Drawer.Dialog` 的 className，用于覆盖默认宽度等 */
+  /** 传给 Sheet 内容的 className，用于覆盖默认宽度等 */
   className?: string;
   /** 隐藏底部操作区；默认 `false` */
   hideFooter?: boolean;
@@ -53,7 +48,7 @@ export interface DrawerOptions {
   confirmLoadingEnabled?: boolean;
   /**
    * 点击确定：调用 `done()` 后才关闭。
-   * 确定按钮不得使用 HeroUI `slot="close"`，否则会跳过本钩子。
+   * 确定按钮不得使用自动关闭，否则会跳过本钩子。
    */
   beforeSure?: (done: () => void, ctx: DrawerBeforeSureContext) => void | Promise<void>;
   /** 点击取消：调用 `done()` 后才关闭 */

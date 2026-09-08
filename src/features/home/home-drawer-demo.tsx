@@ -1,5 +1,4 @@
-import { Button } from '@heroui/react';
-
+import { Button } from '@/components/ui/button';
 import { addDrawer } from '@/components/ui/drawer';
 
 /** Confirm stays pending until `beforeSure` resolves, then closes. */
@@ -69,7 +68,6 @@ function openEscapeLockedDrawer() {
 function openDismissLockedDrawer() {
   addDrawer({
     title: 'Backdrop and Escape locked',
-
     hideFooter: true,
     isDismissable: false,
     isKeyboardDismissDisabled: true,
@@ -85,7 +83,7 @@ function openDismissLockedDrawer() {
 function openStackedDrawers() {
   addDrawer({
     title: 'Bottom drawer',
-    className: 'w-[600px]',
+    className: 'w-[600px] sm:max-w-[600px]',
     content: 'This drawer sits behind the second one.',
   });
 
@@ -114,22 +112,20 @@ export function HomeDrawerDemo() {
 
   return (
     <div className="flex flex-wrap gap-3">
-      <Button variant="primary" onPress={openConfirmLoadingDrawer}>
-        Drawer: Confirm loading
-      </Button>
-      <Button variant="secondary" onPress={openFooterLessDrawer}>
+      <Button onClick={openConfirmLoadingDrawer}>Drawer: Confirm loading</Button>
+      <Button variant="secondary" onClick={openFooterLessDrawer}>
         Drawer: No footer
       </Button>
-      <Button variant="tertiary" onPress={openBackdropLockedDrawer}>
+      <Button variant="outline" onClick={openBackdropLockedDrawer}>
         Drawer: Lock backdrop
       </Button>
-      <Button variant="ghost" onPress={openEscapeLockedDrawer}>
+      <Button variant="ghost" onClick={openEscapeLockedDrawer}>
         Drawer: Lock Escape
       </Button>
-      <Button variant="outline" onPress={openDismissLockedDrawer}>
+      <Button variant="outline" onClick={openDismissLockedDrawer}>
         Drawer: Lock backdrop and Escape
       </Button>
-      <Button variant="tertiary" onPress={openStackedDrawers}>
+      <Button variant="outline" onClick={openStackedDrawers}>
         Stacked drawers
       </Button>
     </div>

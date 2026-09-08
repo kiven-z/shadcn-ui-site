@@ -23,10 +23,10 @@ const MEMBERS: Member[] = Array.from({ length: 80 }, (_, index) => {
   };
 });
 
-export const STATUS_COLOR: Record<Member['status'], 'success' | 'warning' | 'danger'> = {
-  Active: 'success',
-  'On Leave': 'warning',
-  Inactive: 'danger',
+export const STATUS_BADGE_CLASS: Record<Member['status'], string> = {
+  Active: 'border-transparent bg-emerald-500/15 text-emerald-700 dark:text-emerald-400',
+  'On Leave': 'border-transparent bg-amber-500/15 text-amber-700 dark:text-amber-400',
+  Inactive: 'border-transparent bg-destructive/10 text-destructive',
 };
 
 export const EMPTY_QUERY: Record<string, never> = {};

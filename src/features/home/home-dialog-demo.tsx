@@ -1,42 +1,5 @@
-import { Button, Disclosure } from '@heroui/react';
-import { Icon } from '@iconify/react';
-import React from 'react';
-
+import { Button } from '@/components/ui/button';
 import { addDialog } from '@/components/ui/dialog';
-
-function NativePreviewPanel() {
-  const [isExpanded, setIsExpanded] = React.useState(true);
-
-  return (
-    <div className="w-full max-w-md text-center">
-      <Disclosure isExpanded={isExpanded} onExpandedChange={setIsExpanded}>
-        <Disclosure.Heading>
-          <Button slot="trigger" variant="secondary">
-            Preview HeroUI Native
-            <Disclosure.Indicator />
-          </Button>
-        </Disclosure.Heading>
-        <Disclosure.Content>
-          <Disclosure.Body className="shadow-panel flex flex-col items-center rounded-3xl bg-surface p-4 text-center">
-            <p className="text-sm text-muted">
-              Scan this QR code with your camera app to preview the HeroUI native components.
-            </p>
-            <img
-              alt="Expo Go QR code"
-              className="aspect-square w-full max-w-54 object-cover"
-              src="https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/images/qr-code-native.png"
-            />
-            <p className="text-sm text-muted">Expo must be installed on your device.</p>
-            <Button className="mt-4" variant="primary">
-              <Icon icon="tabler:brand-apple-filled" />
-              Download on the App Store
-            </Button>
-          </Disclosure.Body>
-        </Disclosure.Content>
-      </Disclosure>
-    </div>
-  );
-}
 
 /** Confirm stays pending until `beforeSure` resolves, then closes. */
 function openConfirmLoadingDialog() {
@@ -120,7 +83,12 @@ function openDismissLockedDialog() {
 function openCustomContentDialog() {
   addDialog({
     title: 'Custom content',
-    content: <NativePreviewPanel />,
+    content: (
+      <div className="space-y-2 text-sm text-muted-foreground">
+        <p>Dialog content can be any React node.</p>
+        <p>Use this for forms, previews, and richer confirmations.</p>
+      </div>
+    ),
   });
 }
 
@@ -155,25 +123,23 @@ export function HomeDialogDemo() {
 
   return (
     <div className="flex flex-wrap gap-3">
-      <Button variant="primary" onPress={openConfirmLoadingDialog}>
-        Confirm loading
-      </Button>
-      <Button variant="secondary" onPress={openFooterLessDialog}>
+      <Button onClick={openConfirmLoadingDialog}>Confirm loading</Button>
+      <Button variant="secondary" onClick={openFooterLessDialog}>
         No footer
       </Button>
-      <Button variant="tertiary" onPress={openBackdropLockedDialog}>
+      <Button variant="outline" onClick={openBackdropLockedDialog}>
         Lock backdrop
       </Button>
-      <Button variant="ghost" onPress={openEscapeLockedDialog}>
+      <Button variant="ghost" onClick={openEscapeLockedDialog}>
         Lock Escape
       </Button>
-      <Button variant="outline" onPress={openDismissLockedDialog}>
+      <Button variant="outline" onClick={openDismissLockedDialog}>
         Lock backdrop and Escape
       </Button>
-      <Button variant="secondary" onPress={openCustomContentDialog}>
+      <Button variant="secondary" onClick={openCustomContentDialog}>
         Custom content
       </Button>
-      <Button variant="tertiary" onPress={openStackedDialogs}>
+      <Button variant="outline" onClick={openStackedDialogs}>
         Stacked dialogs
       </Button>
     </div>

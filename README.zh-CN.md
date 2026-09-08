@@ -1,8 +1,8 @@
-# heroui-site
+# shadcn-ui-site
 
 [English](README.md) | [中文](README.zh-CN.md)
 
-基于 Vite、React 与 HeroUI v3 的站点骨架。Dialog / Drawer 宿主挂在应用根上，与路由树并列。
+基于 Vite、React 与 shadcn/ui 的站点骨架。Dialog / Drawer 宿主挂在应用根上，与路由树并列。
 
 ## 技术栈
 
@@ -10,20 +10,21 @@
 - 包管理：pnpm（安装前校验，仅允许 pnpm）
 - 构建：[Vite](https://vitejs.dev/guide/)；生产分包与 Gzip / Brotli 压缩
 - 框架：[React](https://react.dev/)；[React Router](https://reactrouter.com/)（`createBrowserRouter`，路由懒加载）
-- UI：[HeroUI v3](https://heroui.com)
-- 样式：[Tailwind CSS v4](https://tailwindcss.com)；tailwind-variants；clsx
+- UI：[shadcn/ui](https://ui.shadcn.com)（Radix Nova）
+- 样式：[Tailwind CSS v4](https://tailwindcss.com)；class-variance-authority；cn
+- 表格：[TanStack Table](https://tanstack.com/table)
 - 状态：Zustand（persist）
 - 国际化：i18next；YAML 文案
-- 图标：unplugin-icons；Iconify
+- 图标：unplugin-icons；Iconify；Lucide（shadcn 原语）
 - 工程：ESLint；Prettier
 
 ## 功能
 
-- 站点布局：顶栏、主内容、页脚；桌面导航与移动端抽屉菜单
-- 全局宿主：Dialog、Drawer、Toast 挂在应用根，与路由并列
+- 站点布局：顶栏、主内容、页脚；桌面导航与移动端 Sheet 菜单
+- 全局宿主：Dialog、Drawer（Sheet）、Toast 挂在应用根，与路由并列
 - 命令式 Dialog：打开 / 关闭 / 确定 / 清空；叠层、尺寸、自定义内容与底部按钮、遮罩与 ESC 控制、确定前校验与 loading、关闭动画结束后回调；路由切换清空队列
-- 命令式 Drawer：契约与 Dialog 对齐；支持四向滑出
-- 数据表格：列配置驱动；受控分页、行选择、加载与空状态
+- 命令式 Drawer：契约与 Dialog 对齐；经 Sheet 支持四向滑出
+- 数据表格：列配置驱动；TanStack Table + shadcn Table；受控分页、行选择、加载与空状态
 - 分页状态：拉取、翻页、选择；失败时 Toast
 - 界面偏好（本地持久化，水合后写入 DOM）：浅色 / 深色 / 跟随系统；简体中文 / English；LTR / RTL
 - 图标：组件内静态图标走编译产物；配置名优先离线表，未命中再走 Iconify

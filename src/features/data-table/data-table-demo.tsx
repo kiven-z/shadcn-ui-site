@@ -1,4 +1,3 @@
-import { Surface } from '@heroui/react';
 import { useEffect } from 'react';
 
 import { memberColumns } from './member-columns';
@@ -25,7 +24,7 @@ export function DataTableDemo() {
 
   return (
     <div className="flex w-full flex-col gap-6">
-      <Surface className="w-full rounded-3xl p-4">
+      <div className="w-full rounded-xl border bg-card p-4">
         <p className="m-0 mb-3 truncate text-base font-semibold">Members</p>
         <DataTable
           aria-label="Members"
@@ -40,9 +39,9 @@ export function DataTableDemo() {
           onPageSizeChange={selectableState.handlePageSizeChange}
           onSelectionChange={selectableState.handleSelectionChange}
         />
-      </Surface>
+      </div>
 
-      <Surface className="w-full rounded-3xl p-4">
+      <div className="w-full rounded-xl border bg-card p-4">
         <p className="m-0 mb-3 truncate text-base font-semibold">Members (no selection)</p>
         <DataTable
           aria-label="Members without selection"
@@ -54,7 +53,7 @@ export function DataTableDemo() {
           onPageCurrentChange={plainState.handlePageCurrentChange}
           onPageSizeChange={plainState.handlePageSizeChange}
         />
-      </Surface>
+      </div>
     </div>
   );
 }

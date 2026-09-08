@@ -1,8 +1,8 @@
-import { Toast } from '@heroui/react';
 import { RouterProvider } from 'react-router-dom';
 
 import { DialogHost } from '@/components/ui/dialog';
 import { DrawerHost } from '@/components/ui/drawer';
+import { Toaster } from '@/components/ui/sonner';
 import { router } from '@/router';
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
       <RouterProvider router={router} />
       <DialogHost />
       <DrawerHost />
-      <Toast.Provider placement="bottom end" />
+      <Toaster position="bottom-right" />
     </>
   );
 }

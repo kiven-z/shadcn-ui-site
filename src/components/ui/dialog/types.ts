@@ -1,20 +1,15 @@
+import type { VariantProps } from 'class-variance-authority';
 import type { ReactNode } from 'react';
+import type { buttonVariants } from '@/components/ui/button';
 
-/** Dialog 尺寸，对应 HeroUI `Modal.Container` 的 `size` */
+/** Dialog 尺寸 */
 export type DialogSize = 'xs' | 'sm' | 'md' | 'lg' | 'cover' | 'full';
 
 /** 关闭来源：`cancel` 取消按钮、`sure` 确定按钮、`close` 关闭钮 / 遮罩 / ESC */
 export type DialogCloseCommand = 'cancel' | 'sure' | 'close';
 
-/** Dialog 底部按钮变体，对应 HeroUI Button */
-export type DialogFooterButtonVariant =
-  | 'primary'
-  | 'secondary'
-  | 'tertiary'
-  | 'ghost'
-  | 'danger'
-  | 'danger-soft'
-  | 'outline';
+/** Dialog 底部按钮变体，对应 shadcn Button */
+export type DialogFooterButtonVariant = NonNullable<VariantProps<typeof buttonVariants>['variant']>;
 
 /** Dialog 自定义底部按钮 */
 export interface DialogFooterButton {
@@ -22,7 +17,7 @@ export interface DialogFooterButton {
   variant?: DialogFooterButtonVariant;
   isPending?: boolean;
   isDisabled?: boolean;
-  onPress?: () => void;
+  onClick?: () => void;
 }
 
 /** `beforeSure` 回调上下文 */
@@ -50,7 +45,7 @@ export interface DialogOptions {
   confirmLoadingEnabled?: boolean;
   /**
    * 点击确定：调用 `done()` 后才关闭。
-   * 确定按钮不得使用 HeroUI `slot="close"`，否则会跳过本钩子。
+   * 确定按钮不得使用自动关闭，否则会跳过本钩子。
    */
   beforeSure?: (done: () => void, ctx: DialogBeforeSureContext) => void | Promise<void>;
   /** 点击取消：调用 `done()` 后才关闭 */

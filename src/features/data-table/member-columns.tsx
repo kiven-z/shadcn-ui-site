@@ -1,9 +1,9 @@
 import type { DataTableColumn } from '@/components/ui/data-table';
 
-import { Button, Chip } from '@heroui/react';
+import { type Member, STATUS_BADGE_CLASS } from './members';
 
-import { type Member, STATUS_COLOR } from './members';
-
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { addDialog } from '@/components/ui/dialog';
 
 export const memberColumns: DataTableColumn<Member>[] = [
@@ -14,9 +14,9 @@ export const memberColumns: DataTableColumn<Member>[] = [
     accessor: 'status',
     label: 'Status',
     render: ({ row }) => (
-      <Chip color={STATUS_COLOR[row.status]} size="sm" variant="soft">
+      <Badge className={STATUS_BADGE_CLASS[row.status]} variant="outline">
         {row.status}
-      </Chip>
+      </Badge>
     ),
   },
   { id: 'email', accessor: 'email', label: 'Email' },
@@ -27,11 +27,11 @@ export const memberColumns: DataTableColumn<Member>[] = [
       <Button
         size="sm"
         variant="ghost"
-        onPress={() => {
+        onClick={() => {
           addDialog({
             title: 'Edit',
             hideFooter: true,
-            content: <p className="text-sm text-muted">{row.email}</p>,
+            content: <p className="text-sm text-muted-foreground">{row.email}</p>,
           });
         }}
       >

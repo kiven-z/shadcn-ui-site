@@ -10,7 +10,7 @@ export interface DataTableCellContext<T> {
 /** 行 id / 选择键 */
 export type DataTableRowKey = string | number;
 
-/** HeroUI Table 行选择值 */
+/** 行选择值 */
 export type DataTableSelection = 'all' | Set<DataTableRowKey>;
 
 /** 列定义 */

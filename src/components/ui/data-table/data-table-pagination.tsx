@@ -1,10 +1,19 @@
-import type { Key } from 'react';
 import type { DataTablePagination as DataTablePaginationValue } from './types.ts';
 
-import { ListBox, Pagination, Select } from '@heroui/react';
 import { useTranslation } from 'react-i18next';
 
 import { DEFAULT_PAGE_SIZES } from './constants.ts';
+
+import { Button } from '@/components/ui/button';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface DataTablePaginationProps {
   pagination: DataTablePaginationValue;
@@ -45,7 +54,7 @@ function buildPageItems(currentPage: number, totalPages: number): PageItem[] {
 }
 
 /**
- * 把 total / pageSize / currentPage 编成 HeroUI Pagination，含每页条数。
+ * 把 total / pageSize / currentPage 编成分页控件，含每页条数。
  */
 export function DataTablePagination({ pagination, onPageCurrentChange, onPageSizeChange }: DataTablePaginationProps) {
   const { t } = useTranslation();
@@ -55,69 +64,83 @@ export function DataTablePagination({ pagination, onPageCurrentChange, onPageSiz
   const startItem = total === 0 ? 0 : (currentPage - 1) * pageSize + 1;
   const endItem = Math.min(currentPage * pageSize, total);
 
-  function handlePageSizeChange(value: Key | Key[] | null) {
-    if (typeof value === 'string' || typeof value === 'number') {
-      onPageSizeChange?.(Number(value));
-    }
-  }
-
   return (
     <div className="flex w-full flex-wrap items-center gap-3">
       <Select
-        aria-label={t('table.pageSizeLabel')}
-        className="w-36"
         value={String(pageSize)}
-        variant="secondary"
-        onChange={handlePageSizeChange}
+        onValueChange={(value) => {
+          onPageSizeChange?.(Number(value));
+        }}
       >
-        <Select.Trigger>
-          <Select.Value />
-          <Select.Indicator />
-        </Select.Trigger>
-        <Select.Popover>
-          <ListBox>
-            {pageSizes.map((size) => (
-              <ListBox.Item key={size} id={String(size)} textValue={t('table.pageSize', { size })}>
-                {t('table.pageSize', { size })}
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-            ))}
-          </ListBox>
-        </Select.Popover>
+        <SelectTrigger aria-label={t('table.pageSizeLabel')} className="w-36" size="sm">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {pageSizes.map((size) => (
+            <SelectItem key={size} value={String(size)}>
+              {t('table.pageSize', { size })}
+            </SelectItem>
+          ))}
+        </SelectContent>
       </Select>
 
-      <Pagination className="min-w-0 flex-1" size="sm">
-        <Pagination.Summary>{t('table.summary', { start: startItem, end: endItem, total })}</Pagination.Summary>
-        <Pagination.Content>
-          <Pagination.Item>
-            <Pagination.Previous isDisabled={currentPage <= 1} onPress={() => onPageCurrentChange?.(currentPage - 1)}>
-              <Pagination.PreviousIcon />
-              {t('table.previous')}
-            </Pagination.Previous>
-          </Pagination.Item>
+      <Pagination className="mx-0 min-w-0 flex-1 justify-start sm:justify-end">
+        <PaginationContent className="flex-wrap">
+          <PaginationItem>
+            <span className="me-2 text-sm text-muted-foreground">
+              {t('table.summary', { start: startItem, end: endItem, total })}
+            </span>
+          </PaginationItem>
+          <PaginationItem>
+            {currentPage <= 1 ? (
+              <Button disabled size="default" variant="ghost">
+                {t('table.previous')}
+              </Button>
+            ) : (
+              <PaginationPrevious
+                href="#"
+                text={t('table.previous')}
+                onClick={(event) => {
+                  event.preventDefault();
+                  onPageCurrentChange?.(currentPage - 1);
+                }}
+              />
+            )}
+          </PaginationItem>
           {buildPageItems(currentPage, totalPages).map((item, index) =>
             item === 'ellipsis' ? (
-              <Pagination.Item key={`ellipsis-${index}`}>
-                <Pagination.Ellipsis />
-              </Pagination.Item>
+              <PaginationItem key={`ellipsis-${index}`}>
+                <PaginationEllipsis />
+              </PaginationItem>
             ) : (
-              <Pagination.Item key={item}>
-                <Pagination.Link isActive={item === currentPage} onPress={() => onPageCurrentChange?.(item)}>
+              <PaginationItem key={item}>
+                <Button
+                  size="icon"
+                  variant={item === currentPage ? 'outline' : 'ghost'}
+                  onClick={() => onPageCurrentChange?.(item)}
+                >
                   {item}
-                </Pagination.Link>
-              </Pagination.Item>
+                </Button>
+              </PaginationItem>
             )
           )}
-          <Pagination.Item>
-            <Pagination.Next
-              isDisabled={currentPage >= totalPages}
-              onPress={() => onPageCurrentChange?.(currentPage + 1)}
-            >
-              {t('table.next')}
-              <Pagination.NextIcon />
-            </Pagination.Next>
-          </Pagination.Item>
-        </Pagination.Content>
+          <PaginationItem>
+            {currentPage >= totalPages ? (
+              <Button disabled size="default" variant="ghost">
+                {t('table.next')}
+              </Button>
+            ) : (
+              <PaginationNext
+                href="#"
+                text={t('table.next')}
+                onClick={(event) => {
+                  event.preventDefault();
+                  onPageCurrentChange?.(currentPage + 1);
+                }}
+              />
+            )}
+          </PaginationItem>
+        </PaginationContent>
       </Pagination>
     </div>
   );

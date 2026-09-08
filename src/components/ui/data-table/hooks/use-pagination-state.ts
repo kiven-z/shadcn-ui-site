@@ -1,8 +1,8 @@
 import type { DataTableSelection, FetchTableDataOptions, PageResult, PaginationTableState } from '../types.ts';
 
-import { toast } from '@heroui/react';
 import { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
 interface PaginationSnapshot {
   total: number;
@@ -95,7 +95,7 @@ export function usePaginationState<T extends object, TQuery extends Record<strin
       } catch (error: unknown) {
         const description = error instanceof Error ? error.message : undefined;
 
-        toast.danger(t('table.fetchFailed'), description ? { description } : undefined);
+        toast.error(t('table.fetchFailed'), description ? { description } : undefined);
         setTableData([]);
         const failed = { ...next, total: 0 };
 

@@ -1,10 +1,12 @@
-import { Button, Drawer, useOverlayState } from '@heroui/react';
 import clsx from 'clsx';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
 
 import MenuLine from '~icons/ri/menu-line';
 
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { siteConfig } from '@/config/site';
 import { LayoutDrawerPreferences } from '@/layouts/layout-header/layout-drawer-preferences';
 import { LayoutNavbarAvatar } from '@/layouts/layout-header/layout-navbar-avatar';
@@ -14,27 +16,26 @@ import { useDirectionPreferencesStore } from '@/store/preferences/direction-pref
 function navLinkClassName({ isActive }: { isActive: boolean }) {
   return clsx(
     'text-sm transition-colors',
-    isActive ? 'font-medium text-foreground' : 'text-muted hover:text-foreground'
+    isActive ? 'font-medium text-foreground' : 'text-muted-foreground hover:text-foreground'
   );
 }
 
 export function LayoutHeader() {
   const { t } = useTranslation();
-  const menu = useOverlayState();
+  const [menuOpen, setMenuOpen] = useState(false);
   const direction = useDirectionPreferencesStore((state) => state.direction);
 
   return (
     <header className="sticky top-4 z-40 px-3 sm:px-6">
-      <nav className="mx-auto flex h-14 items-center justify-between rounded-2xl border border-separator bg-surface px-3 shadow-sm">
+      <nav className="mx-auto flex h-14 items-center justify-between rounded-2xl border bg-card px-3 shadow-sm">
         <div className="flex min-w-0 items-center gap-1 sm:gap-2">
           <Button
-            isIconOnly
-            aria-expanded={menu.isOpen}
+            aria-expanded={menuOpen}
             aria-label={t('nav.menu')}
             className="md:hidden"
-            size="sm"
+            size="icon-sm"
             variant="ghost"
-            onPress={menu.open}
+            onClick={() => setMenuOpen(true)}
           >
             <MenuLine aria-hidden className="size-4 text-foreground" />
           </Button>
@@ -63,33 +64,30 @@ export function LayoutHeader() {
         </div>
       </nav>
 
-      <Drawer.Backdrop isOpen={menu.isOpen} onOpenChange={menu.setOpen}>
-        <Drawer.Content placement={direction === 'rtl' ? 'right' : 'left'}>
-          <Drawer.Dialog>
-            <Drawer.CloseTrigger />
-            <Drawer.Header>
-              <Drawer.Heading>{t('nav.menu')}</Drawer.Heading>
-            </Drawer.Header>
-            <Drawer.Body>
-              <ul className="flex flex-col gap-1">
-                {siteConfig.navItems.map((item) => (
-                  <li key={item.href}>
-                    <NavLink
-                      className={({ isActive }) => clsx(navLinkClassName({ isActive }), 'block rounded-xl px-3 py-2.5')}
-                      end={item.href === '/'}
-                      to={item.href}
-                      onClick={menu.close}
-                    >
-                      {t(item.labelKey)}
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
-              <LayoutDrawerPreferences />
-            </Drawer.Body>
-          </Drawer.Dialog>
-        </Drawer.Content>
-      </Drawer.Backdrop>
+      <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+        <SheetContent side={direction === 'rtl' ? 'right' : 'left'}>
+          <SheetHeader>
+            <SheetTitle>{t('nav.menu')}</SheetTitle>
+          </SheetHeader>
+          <div className="flex flex-col gap-4 px-4">
+            <ul className="flex flex-col gap-1">
+              {siteConfig.navItems.map((item) => (
+                <li key={item.href}>
+                  <NavLink
+                    className={({ isActive }) => clsx(navLinkClassName({ isActive }), 'block rounded-xl px-3 py-2.5')}
+                    end={item.href === '/'}
+                    to={item.href}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {t(item.labelKey)}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+            <LayoutDrawerPreferences />
+          </div>
+        </SheetContent>
+      </Sheet>
     </header>
   );
 }

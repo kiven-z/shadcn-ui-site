@@ -1,7 +1,7 @@
 import type { DrawerStoreItem } from './drawer-store';
 import type { DrawerFooterButton } from './types';
 
-import { Button, Drawer, Spinner } from '@heroui/react';
+import { Loader2Icon } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -9,37 +9,36 @@ import { waitOverlayExitAnimations } from '../overlay';
 
 import { closeDrawer, confirmDrawer, finalizeDrawerClose } from './drawer-store';
 
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+
 interface DrawerItemProps {
   item: DrawerStoreItem;
 }
 
-function DrawerActionButton({ label, isDisabled, isPending, variant, onPress }: DrawerFooterButton) {
+function DrawerActionButton({ label, isDisabled, isPending, variant = 'default', onClick }: DrawerFooterButton) {
   return (
-    <Button isDisabled={isDisabled} isPending={isPending} variant={variant} onPress={onPress}>
-      {({ isPending: pending }) => (
-        <>
-          {pending ? <Spinner color="current" size="sm" /> : null}
-          {label}
-        </>
-      )}
+    <Button disabled={isDisabled || isPending} variant={variant} onClick={onClick}>
+      {isPending ? <Loader2Icon className="animate-spin" /> : null}
+      {label}
     </Button>
   );
 }
 
 /**
- * 单个命令式 Drawer：受控 HeroUI Drawer，退出动画结束后再从队列移除。
+ * 单个命令式 Drawer：受控 shadcn Sheet，退出动画结束后再从队列移除。
  */
 export function DrawerItem({ item }: DrawerItemProps) {
   const { t } = useTranslation();
   const { options } = item;
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (item.isOpen) {
       return;
     }
 
-    return waitOverlayExitAnimations(overlayRef.current, () => {
+    return waitOverlayExitAnimations(contentRef.current, () => {
       finalizeDrawerClose(item.id);
     });
   }, [item.id, item.isOpen]);
@@ -63,44 +62,50 @@ export function DrawerItem({ item }: DrawerItemProps) {
   }
 
   const customButtons = options.footerButtons;
+  const isDismissable = options.isDismissable ?? true;
+  const isKeyboardDismissDisabled = options.isKeyboardDismissDisabled ?? false;
 
   return (
-    <Drawer.Backdrop
-      ref={overlayRef}
-      isDismissable={options.isDismissable ?? true}
-      isKeyboardDismissDisabled={options.isKeyboardDismissDisabled ?? false}
-      isOpen={item.isOpen}
-      onOpenChange={handleOpenChange}
-    >
-      <Drawer.Content placement={options.placement ?? 'right'}>
-        <Drawer.Dialog className={options.className}>
-          {options.showClose === false ? null : <Drawer.CloseTrigger />}
-          <Drawer.Header>
-            <Drawer.Heading>{options.title}</Drawer.Heading>
-          </Drawer.Header>
-          <Drawer.Body>{options.content}</Drawer.Body>
-          {options.hideFooter ? null : (
-            <Drawer.Footer>
-              {customButtons && customButtons.length > 0 ? (
-                customButtons.map((button, index) => (
-                  <DrawerActionButton key={`${button.label}-${index}`} {...button} />
-                ))
-              ) : (
-                <>
-                  <Button variant="secondary" onPress={handleCancel}>
-                    {t('dialog.close')}
-                  </Button>
-                  <DrawerActionButton
-                    isPending={item.confirmLoading}
-                    label={t('dialog.confirm')}
-                    onPress={() => confirmDrawer(item.id)}
-                  />
-                </>
-              )}
-            </Drawer.Footer>
-          )}
-        </Drawer.Dialog>
-      </Drawer.Content>
-    </Drawer.Backdrop>
+    <Sheet open={item.isOpen} onOpenChange={handleOpenChange}>
+      <SheetContent
+        ref={contentRef}
+        className={options.className}
+        showCloseButton={options.showClose !== false}
+        side={options.placement ?? 'right'}
+        onEscapeKeyDown={(event) => {
+          if (isKeyboardDismissDisabled) {
+            event.preventDefault();
+          }
+        }}
+        onInteractOutside={(event) => {
+          if (!isDismissable) {
+            event.preventDefault();
+          }
+        }}
+      >
+        <SheetHeader>
+          <SheetTitle>{options.title}</SheetTitle>
+        </SheetHeader>
+        <div className="flex-1 overflow-auto px-4 text-sm">{options.content}</div>
+        {options.hideFooter ? null : (
+          <SheetFooter>
+            {customButtons && customButtons.length > 0 ? (
+              customButtons.map((button, index) => <DrawerActionButton key={`${button.label}-${index}`} {...button} />)
+            ) : (
+              <>
+                <Button variant="secondary" onClick={handleCancel}>
+                  {t('dialog.close')}
+                </Button>
+                <DrawerActionButton
+                  isPending={item.confirmLoading}
+                  label={t('dialog.confirm')}
+                  onClick={() => confirmDrawer(item.id)}
+                />
+              </>
+            )}
+          </SheetFooter>
+        )}
+      </SheetContent>
+    </Sheet>
   );
 }
