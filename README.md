@@ -13,16 +13,16 @@ the route tree.
 - Framework: [React](https://react.dev/); [React Router](https://reactrouter.com/) (`createBrowserRouter`, lazy-loaded
   routes)
 - UI: [shadcn/ui](https://ui.shadcn.com) (Radix Nova)
-- Styling: [Tailwind CSS v4](https://tailwindcss.com); class-variance-authority; cn
+- Styling: [Tailwind CSS v4](https://tailwindcss.com); class-variance-authority; clsx; tailwind-merge
 - Table: [TanStack Table](https://tanstack.com/table)
 - State: Zustand (persist)
 - Internationalization: i18next; YAML message catalogs
 - Icons: unplugin-icons; Iconify; Lucide (shadcn primitives)
-- Tooling: ESLint; Prettier
+- Tooling: ESLint; Prettier; [shadcn MCP](https://ui.shadcn.com/docs/mcp) (Cursor)
 
 ## Features
 
-- Site layout: header, main content, and footer; desktop navigation and mobile sheet menu
+- Admin shell: collapsible sidebar (icon mode; mobile Sheet), header toolbar, main content, and footer
 - Global hosts: Dialog, Drawer (Sheet), and Toast mounted at the application root, alongside the route tree
 - Imperative Dialog: open / close / confirm / clear; sizes, custom content and footer buttons, backdrop and Escape
   controls, pre-confirm validation with loading, post-exit-animation callbacks; cleared on route change

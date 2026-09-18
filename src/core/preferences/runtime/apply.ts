@@ -1,5 +1,6 @@
-import { useLocalePreferencesStore } from '@/store/preferences/locale-preferences';
 import { useDirectionPreferencesStore } from '@/store/preferences/direction-preferences';
+import { useDisplayPreferencesStore } from '@/store/preferences/display-preferences';
+import { useLocalePreferencesStore } from '@/store/preferences/locale-preferences';
 import { useThemePreferencesStore } from '@/store/preferences/theme-preferences';
 
 interface PersistHydrationApi {
@@ -30,14 +31,17 @@ export async function applyHydratedUiPreferences(): Promise<void> {
     waitHydrated(useThemePreferencesStore),
     waitHydrated(useLocalePreferencesStore),
     waitHydrated(useDirectionPreferencesStore),
+    waitHydrated(useDisplayPreferencesStore),
   ]);
 
   const theme = useThemePreferencesStore.getState();
   const locale = useLocalePreferencesStore.getState();
   const direction = useDirectionPreferencesStore.getState();
+  const display = useDisplayPreferencesStore.getState();
 
   theme.applyToDom();
   theme.startSystemThemeWatch();
   locale.applyToDom();
   direction.applyToDom();
+  display.applyToDom();
 }

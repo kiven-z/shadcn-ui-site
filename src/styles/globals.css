@@ -130,3 +130,15 @@
     @apply font-sans;
   }
 }
+
+.html-grey {
+  filter: grayscale(100%);
+}
+
+.html-weakness {
+  filter: invert(80%);
+}
+
+.html-grey.html-weakness {
+  filter: grayscale(100%) invert(80%);
+}

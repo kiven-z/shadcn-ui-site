@@ -6,7 +6,8 @@ dist-ssr
 .eslintcache
 report.html
 vite.config.*.timestamp*
-.cursor
+.cursor/*
+!.cursor/mcp.json
 
 yarn.lock
 npm-debug.log*

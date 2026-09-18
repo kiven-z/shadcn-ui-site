@@ -37,5 +37,5 @@ export default {
   // Tailwind class 按官方顺序排；须放 plugins 最后
   plugins: ['prettier-plugin-tailwindcss'],
   tailwindStylesheet: './src/styles/globals.css',
-  tailwindFunctions: ['clsx', 'tv'],
+  tailwindFunctions: ['clsx', 'cn'],
 };

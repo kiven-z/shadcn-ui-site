@@ -11,16 +11,16 @@
 - 构建：[Vite](https://vitejs.dev/guide/)；生产分包与 Gzip / Brotli 压缩
 - 框架：[React](https://react.dev/)；[React Router](https://reactrouter.com/)（`createBrowserRouter`，路由懒加载）
 - UI：[shadcn/ui](https://ui.shadcn.com)（Radix Nova）
-- 样式：[Tailwind CSS v4](https://tailwindcss.com)；class-variance-authority；cn
+- 样式：[Tailwind CSS v4](https://tailwindcss.com)；class-variance-authority；clsx；tailwind-merge
 - 表格：[TanStack Table](https://tanstack.com/table)
 - 状态：Zustand（persist）
 - 国际化：i18next；YAML 文案
 - 图标：unplugin-icons；Iconify；Lucide（shadcn 原语）
-- 工程：ESLint；Prettier
+- 工程：ESLint；Prettier；[shadcn MCP](https://ui.shadcn.com/docs/mcp)（Cursor）
 
 ## 功能
 
-- 站点布局：顶栏、主内容、页脚；桌面导航与移动端 Sheet 菜单
+- 后台壳：可折叠侧栏（图标模式；移动端 Sheet）、顶栏工具区、主内容、页脚
 - 全局宿主：Dialog、Drawer（Sheet）、Toast 挂在应用根，与路由并列
 - 命令式 Dialog：打开 / 关闭 / 确定 / 清空；尺寸、自定义内容与底部按钮、遮罩与 ESC 控制、确定前校验与
   loading、关闭动画结束后回调；路由切换清空

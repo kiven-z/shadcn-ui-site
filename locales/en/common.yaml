@@ -1,16 +1,7 @@
 nav:
-  menu: Menu
-  features: Features
-  table: Table
-  account: Account
-  demoOnly: Demo only
-  accountMenu:
-    account: Account
-    workspace: Workspace
-    setting: Setting
-    contact-us: Contact us
-    sign-out: Sign out
+  sidebarToggle: Toggle sidebar
 panel:
+  systemSettings: Settings
   theme:
     title: Theme
     light: Light
@@ -22,6 +13,10 @@ panel:
     title: Direction
     ltr: Left to right
     rtl: Right to left
+  display:
+    title: Display
+    grey: Greyscale
+    weak: Colorblind
 error:
   backHome: Back to home
   403:

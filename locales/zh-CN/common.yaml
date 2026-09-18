@@ -1,16 +1,7 @@
 nav:
-  menu: 菜单
-  features: 功能
-  table: 表格
-  account: 账户
-  demoOnly: 仅演示
-  accountMenu:
-    account: 账户
-    workspace: 工作空间
-    setting: 设置
-    contact-us: 联系我们
-    sign-out: 退出登录
+  sidebarToggle: 展开或收起侧栏
 panel:
+  systemSettings: 系统配置
   theme:
     title: 主题
     light: 浅色
@@ -22,6 +13,10 @@ panel:
     title: 方向
     ltr: 从左到右
     rtl: 从右到左
+  display:
+    title: 显示
+    grey: 灰色模式
+    weak: 色弱模式
 error:
   backHome: 返回首页
   403:
