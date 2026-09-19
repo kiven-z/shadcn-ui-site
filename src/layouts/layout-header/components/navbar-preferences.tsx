@@ -12,12 +12,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu.tsx';
 import { LOCALES } from '@/config/locale-config.ts';
-import { openPreferencesDrawer } from '@/layouts/_shared/preferences-panel';
+import { usePreferencesDrawer } from '@/layouts/_shared/preferences-drawer';
 import { useLocalePreferencesStore } from '@/store/preferences/locale-preferences.ts';
 
 /** 顶栏偏好入口：语言下拉 + 打开设置抽屉 */
 export function NavbarPreferences() {
   const { t } = useTranslation();
+  const { setOpen: setPreferencesOpen } = usePreferencesDrawer();
   const locale = useLocalePreferencesStore((state) => state.locale);
   const setLocale = useLocalePreferencesStore((state) => state.setLocale);
 
@@ -40,7 +41,12 @@ export function NavbarPreferences() {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <Button aria-label={t('panel.systemSettings')} size="icon-sm" variant="ghost" onClick={openPreferencesDrawer}>
+      <Button
+        aria-label={t('panel.systemSettings')}
+        size="icon-sm"
+        variant="ghost"
+        onClick={() => setPreferencesOpen(true)}
+      >
         <Settings />
       </Button>
     </>

@@ -9,8 +9,8 @@ export default function HomePage() {
       <div className="inline-block max-w-xl">
         <h1 className="inline text-3xl font-semibold tracking-tight sm:text-[2.3rem] lg:text-5xl">shadcn-ui-site</h1>
         <p className="mt-4 mb-2 block w-full max-w-full text-base text-muted-foreground sm:text-lg md:w-1/2 lg:text-xl">
-          Vite + React + shadcn/ui site starter. Dialog and Drawer hosts are mounted at the app root, alongside the
-          route tree.
+          Vite + React + shadcn/ui site starter. Dialogs and drawers are controlled with open / onOpenChange. Confirms
+          can also be opened with useDialog().
         </p>
       </div>
 

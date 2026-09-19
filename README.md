@@ -2,8 +2,8 @@
 
 [English](README.md) | [中文](README.zh-CN.md)
 
-A site skeleton built with Vite, React, and shadcn/ui. Dialog and Drawer hosts mount at the application root, alongside
-the route tree.
+A site skeleton built with Vite, React, and shadcn/ui. Dialogs and drawers are controlled with `open` / `onOpenChange`.
+Confirm and warning dialogs can also be opened with `useDialog()`.
 
 ## Tech Stack
 
@@ -23,10 +23,11 @@ the route tree.
 ## Features
 
 - Admin shell: collapsible sidebar (icon mode; mobile Sheet), header toolbar, main content, and footer
-- Global hosts: Dialog, Drawer (Sheet), and Toast mounted at the application root, alongside the route tree
-- Imperative Dialog: open / close / confirm / clear; sizes, custom content and footer buttons, backdrop and Escape
-  controls, pre-confirm validation with loading, post-exit-animation callbacks; cleared on route change
-- Imperative Drawer: same contract as Dialog; four-edge placement via Sheet
+- Global host: Toast mounted at the application root, alongside the route tree
+- Controlled Dialog: `open` / `onOpenChange`; sizes, backdrop and Escape controls, caller-owned confirm loading
+- Imperative confirm: `useDialog().confirm` / `warning`; `onOk` may return a Promise (reject keeps the dialog open);
+  instance `destroy` / `update`; one dialog at a time
+- Controlled Drawer: `open` / `onOpenChange`; four-edge placement via Sheet; preferences drawer is owned by the layout
 - Data table: column-driven; TanStack Table + shadcn Table; controlled pagination, row selection, loading and empty
   states
 - Pagination state: fetch, page change, and selection; Toast on failure

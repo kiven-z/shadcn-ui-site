@@ -1,7 +1,5 @@
 import { useTranslation } from 'react-i18next';
 
-import { i18n } from '@/app/i18n';
-import { addDrawer } from '@/components/ui/drawer';
 import { Icon } from '@/components/ui/icon';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
@@ -13,19 +11,8 @@ import { useDirectionPreferencesStore } from '@/store/preferences/direction-pref
 import { useDisplayPreferencesStore } from '@/store/preferences/display-preferences';
 import { useThemePreferencesStore } from '@/store/preferences/theme-preferences';
 
-/**
- * 打开系统偏好抽屉
- */
-export function openPreferencesDrawer() {
-  addDrawer({
-    title: i18n.t('panel.systemSettings'),
-    content: <PreferencesPanel />,
-    hideFooter: true,
-  });
-}
-
 /** 偏好抽屉正文：主题 / 文档方向 / 灰色与色弱 */
-function PreferencesPanel() {
+export function PreferencesPanel() {
   const { t } = useTranslation();
 
   const direction = useDirectionPreferencesStore((state) => state.direction);

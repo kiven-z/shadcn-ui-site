@@ -2,7 +2,7 @@
 
 [English](README.md) | [中文](README.zh-CN.md)
 
-基于 Vite、React 与 shadcn/ui 的站点骨架。Dialog / Drawer 宿主挂在应用根上，与路由树并列。
+基于 Vite、React 与 shadcn/ui 的站点骨架。弹窗与抽屉以受控 `open` 为主；确认 / 警告可用 `useDialog()`。
 
 ## 技术栈
 
@@ -21,10 +21,10 @@
 ## 功能
 
 - 后台壳：可折叠侧栏（图标模式；移动端 Sheet）、顶栏工具区、主内容、页脚
-- 全局宿主：Dialog、Drawer（Sheet）、Toast 挂在应用根，与路由并列
-- 命令式 Dialog：打开 / 关闭 / 确定 / 清空；尺寸、自定义内容与底部按钮、遮罩与 ESC 控制、确定前校验与
-  loading、关闭动画结束后回调；路由切换清空
-- 命令式 Drawer：契约与 Dialog 对齐；经 Sheet 支持四向滑出
+- 全局宿主：Toast 挂在应用根，与路由并列
+- 受控 Dialog：`open` / `onOpenChange`；尺寸、遮罩与 ESC 控制；确定 loading 由调用方持有
+- 函数式确认：`useDialog().confirm` / `warning`；`onOk` 返回 Promise，reject 则保持打开；实例可 `destroy` / `update`；同刻仅一层
+- 受控 Drawer：`open` / `onOpenChange`；经 Sheet 支持四向滑出；偏好抽屉由布局持有
 - 数据表格：列配置驱动；TanStack Table + shadcn Table；受控分页、行选择、加载与空状态
 - 分页状态：拉取、翻页、选择；失败时 Toast
 - 界面偏好（本地持久化，水合后写入 DOM）：浅色 / 深色 / 跟随系统；简体中文 / English；LTR / RTL

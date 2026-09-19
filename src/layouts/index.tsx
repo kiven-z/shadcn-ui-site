@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { PreferencesDrawerProvider } from '@/layouts/_shared/preferences-drawer';
 import { LayoutFooter } from '@/layouts/layout-footer';
 import { LayoutHeader } from '@/layouts/layout-header';
 import { LayoutMain } from '@/layouts/layout-main';
@@ -18,21 +19,23 @@ function readSidebarCookieOpen(): boolean {
 
 export default function DefaultLayout() {
   return (
-    <SidebarProvider
-      defaultOpen={readSidebarCookieOpen()}
-      style={
-        {
-          '--sidebar-width': 'calc(var(--spacing) * 72)',
-          '--header-height': 'calc(var(--spacing) * 12)',
-        } as CSSProperties
-      }
-    >
-      <LayoutSidebar />
-      <SidebarInset>
-        <LayoutHeader />
-        <LayoutMain />
-        <LayoutFooter />
-      </SidebarInset>
-    </SidebarProvider>
+    <PreferencesDrawerProvider>
+      <SidebarProvider
+        defaultOpen={readSidebarCookieOpen()}
+        style={
+          {
+            '--sidebar-width': 'calc(var(--spacing) * 72)',
+            '--header-height': 'calc(var(--spacing) * 12)',
+          } as CSSProperties
+        }
+      >
+        <LayoutSidebar />
+        <SidebarInset>
+          <LayoutHeader />
+          <LayoutMain />
+          <LayoutFooter />
+        </SidebarInset>
+      </SidebarProvider>
+    </PreferencesDrawerProvider>
   );
 }

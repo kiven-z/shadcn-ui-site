@@ -13,13 +13,14 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { siteConfig } from '@/config/site';
-import { openPreferencesDrawer } from '@/layouts/_shared/preferences-panel';
+import { usePreferencesDrawer } from '@/layouts/_shared/preferences-drawer';
 import { useDirectionPreferencesStore } from '@/store/preferences/direction-preferences';
 
 /** 侧栏底栏用户菜单：账号示例（无真实鉴权） */
 export function LayoutSidebarNavUser() {
   const { t } = useTranslation();
   const { isMobile } = useSidebar();
+  const { setOpen: setPreferencesOpen } = usePreferencesDrawer();
   const direction = useDirectionPreferencesStore((state) => state.direction);
   const menuSide = isMobile ? 'bottom' : direction === 'rtl' ? 'left' : 'right';
   const { name, email } = siteConfig.user;
@@ -64,7 +65,7 @@ export function LayoutSidebarNavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Account</DropdownMenuItem>
-            <DropdownMenuItem onSelect={openPreferencesDrawer}>{t('panel.systemSettings')}</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setPreferencesOpen(true)}>{t('panel.systemSettings')}</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem variant="destructive">Log out</DropdownMenuItem>
           </DropdownMenuContent>
