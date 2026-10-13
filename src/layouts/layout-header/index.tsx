@@ -14,6 +14,7 @@ export function LayoutHeader() {
     <header
       className={cn(
         'flex shrink-0 items-center gap-2 border-b px-4 transition-[width,height] ease-linear',
+        'sticky top-0 z-20 bg-background',
         layout === 'icon' ? 'h-16 group-has-data-[collapsible=icon]/sidebar-wrapper:h-12' : 'h-(--header-height)'
       )}
     >

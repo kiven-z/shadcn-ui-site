@@ -1,30 +1,42 @@
-import { useLocation } from 'react-router-dom';
+import { Fragment } from 'react';
+import { useMatches } from 'react-router-dom';
 
-import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from '@/components/ui/breadcrumb';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { siteConfig } from '@/config/site';
 
-function resolveBreadcrumbLabel(pathname: string): string | undefined {
-  const fromNav = siteConfig.navItems.find((item) => {
-    if (item.href === '/') {
-      return pathname === '/';
-    }
+interface RouteHandle {
+  title: string;
+}
 
-    return pathname === item.href || pathname.startsWith(`${item.href}/`);
-  });
+function isRouteHandle(handle: unknown): handle is RouteHandle {
+  if (typeof handle !== 'object' || handle === null) {
+    return false;
+  }
 
-  return fromNav?.label;
+  return 'title' in handle;
 }
 
 export function HeaderBreadcrumb() {
-  const pathname = useLocation().pathname;
-  const label = resolveBreadcrumbLabel(pathname) ?? siteConfig.name;
+  const titles = useMatches().flatMap((match) => (isRouteHandle(match.handle) ? [match.handle.title] : []));
+  const crumbs = titles.length > 0 ? titles : [siteConfig.name];
 
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbPage>{label}</BreadcrumbPage>
-        </BreadcrumbItem>
+        {crumbs.map((title, index) => (
+          <Fragment key={`${index}-${title}`}>
+            {index > 0 ? <BreadcrumbSeparator /> : null}
+            <BreadcrumbItem>
+              {index === crumbs.length - 1 ? <BreadcrumbPage>{title}</BreadcrumbPage> : <span>{title}</span>}
+            </BreadcrumbItem>
+          </Fragment>
+        ))}
       </BreadcrumbList>
     </Breadcrumb>
   );
