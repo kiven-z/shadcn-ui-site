@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { HeaderBreadcrumb } from '@/layouts/layout-header/components/header-breadcrumb.tsx';
-import { NavbarPreferences } from '@/layouts/layout-header/components/navbar-preferences.tsx';
 
 export function LayoutHeader() {
   const { t } = useTranslation();
@@ -13,9 +12,6 @@ export function LayoutHeader() {
       <SidebarTrigger aria-label={t('nav.sidebarToggle')} />
       <Separator className="mx-2 data-[orientation=vertical]:h-4" orientation="vertical" />
       <HeaderBreadcrumb />
-      <div className="ms-auto flex items-center gap-1">
-        <NavbarPreferences />
-      </div>
     </header>
   );
 }
