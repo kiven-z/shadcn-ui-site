@@ -21,16 +21,25 @@ export function LayoutSidebar() {
   const { t } = useTranslation();
   const direction = useDirectionPreferencesStore((state) => state.direction);
   const layout = useLayoutPreferencesStore((state) => state.layout);
+  const tooltipSide = direction === 'rtl' ? 'left' : 'right';
 
   return (
     <Sidebar collapsible={layout} dir={direction} side={direction === 'rtl' ? 'right' : 'left'} variant="inset">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:p-1.5!">
+            <SidebarMenuButton asChild size="lg" tooltip={{ children: siteConfig.name, side: tooltipSide }}>
               <Link to="/">
-                <img alt="" className="size-5" src="/logo.svg" />
-                <span className="truncate text-base font-semibold">{siteConfig.name}</span>
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                  <span
+                    aria-hidden
+                    className="size-4 bg-current mask-[url(/logo.svg)] mask-alpha mask-contain mask-center mask-no-repeat"
+                  />
+                </div>
+                <div className="grid flex-1 text-start text-sm leading-tight">
+                  <span className="truncate font-medium">{siteConfig.name}</span>
+                  <span className="truncate text-xs">{siteConfig.description}</span>
+                </div>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
