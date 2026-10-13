@@ -20,9 +20,12 @@ import { useDirectionPreferencesStore } from '@/store/preferences/direction-pref
 export function LayoutSidebarNavUser() {
   const { t } = useTranslation();
   const { isMobile } = useSidebar();
+
   const { setOpen: setPreferencesOpen } = usePreferencesDrawer();
+
   const direction = useDirectionPreferencesStore((state) => state.direction);
   const menuSide = isMobile ? 'bottom' : direction === 'rtl' ? 'left' : 'right';
+
   const { name, email } = siteConfig.user;
   const initials = name.slice(0, 2).toUpperCase();
 
@@ -63,9 +66,11 @@ export function LayoutSidebarNavUser() {
                 </div>
               </div>
             </DropdownMenuLabel>
+
             <DropdownMenuSeparator />
             <DropdownMenuItem>Account</DropdownMenuItem>
             <DropdownMenuItem onSelect={() => setPreferencesOpen(true)}>{t('panel.systemSettings')}</DropdownMenuItem>
+
             <DropdownMenuSeparator />
             <DropdownMenuItem variant="destructive">Log out</DropdownMenuItem>
           </DropdownMenuContent>

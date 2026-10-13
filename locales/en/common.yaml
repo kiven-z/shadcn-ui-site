@@ -9,6 +9,10 @@ panel:
     system: System
   locale:
     title: Language
+  layout:
+    title: Layout
+    icon: Collapse to icons
+    offcanvas: Hide sidebar
   direction:
     title: Direction
     ltr: Left to right

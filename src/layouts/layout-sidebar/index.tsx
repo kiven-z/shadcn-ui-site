@@ -15,13 +15,15 @@ import { siteConfig } from '@/config/site';
 import { LayoutSidebarNavMain } from '@/layouts/layout-sidebar/components/nav-main';
 import { LayoutSidebarNavUser } from '@/layouts/layout-sidebar/components/nav-user';
 import { useDirectionPreferencesStore } from '@/store/preferences/direction-preferences';
+import { useLayoutPreferencesStore } from '@/store/preferences/layout-preferences';
 
 export function LayoutSidebar() {
   const { t } = useTranslation();
   const direction = useDirectionPreferencesStore((state) => state.direction);
+  const layout = useLayoutPreferencesStore((state) => state.layout);
 
   return (
-    <Sidebar collapsible="icon" dir={direction} side={direction === 'rtl' ? 'right' : 'left'} variant="inset">
+    <Sidebar collapsible={layout} dir={direction} side={direction === 'rtl' ? 'right' : 'left'} variant="inset">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

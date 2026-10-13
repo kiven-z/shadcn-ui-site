@@ -1,5 +1,6 @@
 import { useDirectionPreferencesStore } from '@/store/preferences/direction-preferences';
 import { useDisplayPreferencesStore } from '@/store/preferences/display-preferences';
+import { useLayoutPreferencesStore } from '@/store/preferences/layout-preferences';
 import { useLocalePreferencesStore } from '@/store/preferences/locale-preferences';
 import { useThemePreferencesStore } from '@/store/preferences/theme-preferences';
 
@@ -31,6 +32,7 @@ export async function applyHydratedUiPreferences(): Promise<void> {
     waitHydrated(useThemePreferencesStore),
     waitHydrated(useLocalePreferencesStore),
     waitHydrated(useDirectionPreferencesStore),
+    waitHydrated(useLayoutPreferencesStore),
     waitHydrated(useDisplayPreferencesStore),
   ]);
 

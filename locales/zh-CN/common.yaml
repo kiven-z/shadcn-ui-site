@@ -9,6 +9,10 @@ panel:
     system: 跟随系统
   locale:
     title: 语言
+  layout:
+    title: 布局方式
+    icon: 收到图标
+    offcanvas: 完全收起
   direction:
     title: 方向
     ltr: 从左到右
