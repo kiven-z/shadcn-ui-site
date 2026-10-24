@@ -5,8 +5,8 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 import ArrowRightSLine from '~icons/ri/arrow-right-s-line';
 
+import { Icon } from '@/components/icon';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { Icon } from '@/components/ui/icon';
 import {
   SidebarGroup,
   SidebarMenu,

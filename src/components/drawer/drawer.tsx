@@ -4,22 +4,18 @@ import { Loader2Icon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Dialog as DialogRoot, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './primitives';
-
+import { waitOverlayExitAnimations } from '@/components/overlay';
 import { Button } from '@/components/ui/button';
-import { waitOverlayExitAnimations } from '@/components/ui/overlay';
-import { cn } from '@/lib/utils';
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 
-/** Dialog 尺寸 */
-type DialogSize = 'xs' | 'sm' | 'md' | 'lg' | 'cover' | 'full';
-
-/** 受控 Dialog 打开参数，对应 antd Modal 的 `open` 模型 */
-interface DialogProps {
+/** 受控 Drawer 打开参数，对应 antd Drawer 的 `open` 模型 */
+interface DrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
   children: ReactNode;
-  size?: DialogSize;
+  /** 滑出边；默认 `right` */
+  placement?: 'right' | 'left' | 'top' | 'bottom';
   className?: string;
   /** 隐藏底部操作区；默认 `false` */
   hideFooter?: boolean;
@@ -29,54 +25,32 @@ interface DialogProps {
   isKeyboardDismissDisabled?: boolean;
   /** 显示右上角关闭钮；默认 `true` */
   showClose?: boolean;
-  /** 显示取消按钮；默认 `true` */
-  showCancel?: boolean;
-  okText?: string;
-  cancelText?: string;
   confirmLoading?: boolean;
   onConfirm?: () => void;
   onCancel?: () => void;
-  /** 关闭动画结束后回调 */
-  onAfterClose?: () => void;
 }
 
-const DIALOG_SIZE_CLASS: Record<DialogSize, string> = {
-  xs: 'sm:max-w-xs',
-  sm: 'sm:max-w-sm',
-  md: 'sm:max-w-md',
-  lg: 'sm:max-w-lg',
-  cover: 'sm:max-w-3xl',
-  full: 'h-[calc(100%-2rem)] max-w-[calc(100%-2rem)] sm:max-w-[calc(100%-2rem)]',
-};
-
 /**
- * 受控弹窗：调用方持有 `open`，正文作为 children 进入同一棵树。
+ * 受控抽屉：调用方持有 `open`，正文作为 children 进入同一棵树。
  */
-export function Dialog({
+export function Drawer({
   open,
   onOpenChange,
   title,
   children,
-  size = 'sm',
+  placement = 'right',
   className,
   hideFooter = false,
   isDismissable = true,
   isKeyboardDismissDisabled = false,
   showClose = true,
-  showCancel = true,
-  okText,
-  cancelText,
   confirmLoading = false,
   onConfirm,
   onCancel,
-  onAfterClose,
-}: DialogProps) {
+}: DrawerProps) {
   const { t } = useTranslation();
   const contentRef = useRef<HTMLDivElement>(null);
-  const onAfterCloseRef = useRef(onAfterClose);
   const [mounted, setMounted] = useState(open);
-
-  onAfterCloseRef.current = onAfterClose;
 
   if (open && !mounted) {
     setMounted(true);
@@ -89,7 +63,6 @@ export function Dialog({
 
     return waitOverlayExitAnimations(contentRef.current, () => {
       setMounted(false);
-      onAfterCloseRef.current?.();
     });
   }, [open, mounted]);
 
@@ -118,11 +91,12 @@ export function Dialog({
   }
 
   return (
-    <DialogRoot open={open} onOpenChange={onOpenChange}>
-      <DialogContent
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent
         ref={contentRef}
-        className={cn(DIALOG_SIZE_CLASS[size], className)}
+        className={className}
         showCloseButton={showClose}
+        side={placement}
         onEscapeKeyDown={(event) => {
           if (isKeyboardDismissDisabled) {
             event.preventDefault();
@@ -134,24 +108,22 @@ export function Dialog({
           }
         }}
       >
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-        </DialogHeader>
-        <div className="text-sm">{children}</div>
+        <SheetHeader>
+          <SheetTitle>{title}</SheetTitle>
+        </SheetHeader>
+        <div className="flex-1 overflow-auto px-4 text-sm">{children}</div>
         {hideFooter ? null : (
-          <DialogFooter>
-            {showCancel ? (
-              <Button variant="secondary" onClick={handleCancel}>
-                {cancelText ?? t('dialog.close')}
-              </Button>
-            ) : null}
+          <SheetFooter>
+            <Button variant="secondary" onClick={handleCancel}>
+              {t('dialog.close')}
+            </Button>
             <Button disabled={confirmLoading} onClick={handleConfirm}>
               {confirmLoading ? <Loader2Icon className="animate-spin" /> : null}
-              {okText ?? t('dialog.confirm')}
+              {t('dialog.confirm')}
             </Button>
-          </DialogFooter>
+          </SheetFooter>
         )}
-      </DialogContent>
-    </DialogRoot>
+      </SheetContent>
+    </Sheet>
   );
 }

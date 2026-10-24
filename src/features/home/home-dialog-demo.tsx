@@ -2,8 +2,8 @@ import type { ReactNode } from 'react';
 
 import { useState } from 'react';
 
+import { Dialog, useDialog } from '@/components/dialog';
 import { Button } from '@/components/ui/button';
-import { Dialog, useDialog } from '@/components/ui/dialog';
 
 type DialogDemoId = 'confirm' | 'noFooter' | 'lockBackdrop' | 'lockEscape' | 'lockDismiss' | 'custom';
 

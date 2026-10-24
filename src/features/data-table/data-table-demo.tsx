@@ -3,8 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { createMemberColumns } from './member-columns';
 import { EMPTY_QUERY, fetchMembers, type Member } from './members';
 
-import { DataTable, usePaginationState } from '@/components/ui/data-table';
-import { Dialog } from '@/components/ui/dialog';
+import { Dialog } from '@/components/dialog';
+import { DataTable, usePaginationState } from '@/components/table/data-table';
 
 export function DataTableDemo() {
   const [editing, setEditing] = useState<Member | null>(null);

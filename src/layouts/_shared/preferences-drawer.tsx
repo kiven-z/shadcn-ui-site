@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { PreferencesPanel } from './preferences-panel';
 
-import { Drawer } from '@/components/ui/drawer';
+import { Drawer } from '@/components/drawer';
 
 interface PreferencesDrawerContextValue {
   open: boolean;

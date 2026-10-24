@@ -2,8 +2,8 @@ import type { ReactNode } from 'react';
 
 import { useState } from 'react';
 
+import { Drawer } from '@/components/drawer';
 import { Button } from '@/components/ui/button';
-import { Drawer } from '@/components/ui/drawer';
 
 type DrawerDemoId = 'confirm' | 'noFooter' | 'lockBackdrop' | 'lockEscape' | 'lockDismiss';
 

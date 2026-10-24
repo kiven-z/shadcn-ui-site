@@ -1,4 +1,4 @@
-import type { DataTableColumn } from '@/components/ui/data-table';
+import type { DataTableColumn } from '@/components/table/data-table';
 
 import { type Member, STATUS_BADGE_CLASS } from './members';
 

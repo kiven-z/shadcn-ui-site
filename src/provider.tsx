@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { I18nextProvider } from 'react-i18next';
 
 import { i18n } from '@/app/i18n';
-import { DialogProvider } from '@/components/ui/dialog';
+import { DialogProvider } from '@/components/dialog';
 import { DirectionProvider } from '@/components/ui/direction';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { useDirectionPreferencesStore } from '@/store/preferences/direction-preferences';
