@@ -1,27 +1,11 @@
-import type { ReactNode } from 'react';
-
-/** 单元格 render 上下文 */
-export interface DataTableCellContext<T> {
-  row: T;
-  value: unknown;
-  index: number;
-}
+import type { ColumnDef, RowData } from '@tanstack/react-table';
+import type { DataTableFeatures } from './features.ts';
 
 /** 行 id / 选择键 */
 export type DataTableRowKey = string | number;
 
 /** 行选择值 */
-export type DataTableSelection = 'all' | Set<DataTableRowKey>;
-
-/** 列定义 */
-export interface DataTableColumn<T> {
-  id: string;
-  label: ReactNode;
-  accessor?: keyof T;
-  render?: (ctx: DataTableCellContext<T>) => ReactNode;
-  /** 行头列；未指定时第一列作为行头 */
-  isRowHeader?: boolean;
-}
+export type DataTableSelection = Set<DataTableRowKey>;
 
 /** 分页对象（只读展示；页码变更由回调交给父级） */
 export interface DataTablePagination {
@@ -32,8 +16,8 @@ export interface DataTablePagination {
 }
 
 /** L0 表格：表体 + 分页 */
-export interface DataTableProps<T> {
-  columns: DataTableColumn<T>[];
+export interface DataTableProps<T extends RowData> {
+  columns: Array<ColumnDef<DataTableFeatures, T, any>>;
   data: T[];
   rowKey: keyof T | ((row: T) => string | number);
   'aria-label': string;

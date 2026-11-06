@@ -1,31 +1,19 @@
-import type { ReactNode } from 'react';
-import type { DataTableColumn, DataTableProps, DataTableSelection } from './types.ts';
+import type { RowData, RowSelectionState } from '@tanstack/react-table';
+import type { DataTableProps, DataTableSelection } from './types.ts';
 
-import {
-  FlexRender,
-  createColumnHelper,
-  createCoreRowModel,
-  rowSelectionFeature,
-  tableFeatures,
-  useTable,
-  type RowSelectionState,
-} from '@tanstack/react-table';
+import { FlexRender, createColumnHelper, useTable } from '@tanstack/react-table';
 import { Loader2Icon } from 'lucide-react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { DataTablePagination } from './data-table-pagination.tsx';
+import { dataTableFeatures, type DataTableFeatures } from './features.ts';
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
-const tableFeatureSet = tableFeatures({
-  rowSelectionFeature,
-  coreRowModel: createCoreRowModel(),
-});
-
-function resolveRowId<T extends object>(row: T, rowKey: DataTableProps<T>['rowKey']): string {
+function resolveRowId<T extends RowData>(row: T, rowKey: DataTableProps<T>['rowKey']): string {
   if (typeof rowKey === 'function') {
     return String(rowKey(row));
   }
@@ -34,7 +22,7 @@ function resolveRowId<T extends object>(row: T, rowKey: DataTableProps<T>['rowKe
 }
 
 function selectionToRowState(selection: DataTableSelection | undefined): RowSelectionState {
-  if (selection == null || selection === 'all') {
+  if (selection == null) {
     return {};
   }
 
@@ -51,24 +39,10 @@ function rowStateToSelection(state: RowSelectionState): DataTableSelection {
   return new Set(Object.keys(state).filter((key) => state[key]));
 }
 
-function resolveCellContent<T extends object>(column: DataTableColumn<T>, row: T, index: number): ReactNode {
-  const value = column.accessor == null ? undefined : row[column.accessor];
-
-  if (column.render) {
-    return column.render({ row, value, index });
-  }
-
-  if (value == null) {
-    return null;
-  }
-
-  return value as ReactNode;
-}
-
 /**
- * L0 表格：列配置驱动的表体 + 受控分页（TanStack Table + shadcn Table）。
+ * L0 表格：表体 + 受控分页（TanStack Table + shadcn Table）。
  */
-export function DataTable<T extends object>({
+export function DataTable<T extends RowData>({
   'aria-label': ariaLabel,
   className,
   columns,
@@ -86,48 +60,51 @@ export function DataTable<T extends object>({
   const { t } = useTranslation();
   const showSelection = selectionMode !== 'none';
 
-  const columnHelper = useMemo(() => createColumnHelper<typeof tableFeatureSet, T>(), []);
+  const columnHelper = useMemo(() => createColumnHelper<DataTableFeatures, T>(), []);
 
   const tableColumns = useMemo(() => {
-    const dataColumns = columns.map((column) =>
-      columnHelper.display({
-        id: column.id,
-        header: () => column.label,
-        cell: ({ row }) => resolveCellContent(column, row.original, row.index),
-      })
-    );
-
     if (!showSelection) {
-      return dataColumns;
+      return columns;
     }
 
-    return [
+    return columnHelper.columns([
       columnHelper.display({
         id: '__select',
-        header: ({ table }) =>
-          selectionMode === 'multiple' ? (
+        header: ({ table }) => {
+          if (selectionMode !== 'multiple') {
+            return null;
+          }
+
+          let checked: boolean | 'indeterminate' = false;
+
+          if (table.getIsAllPageRowsSelected()) {
+            checked = true;
+          } else if (table.getIsSomePageRowsSelected()) {
+            checked = 'indeterminate';
+          }
+
+          return (
             <Checkbox
               aria-label={t('table.selectAll')}
-              checked={
-                table.getIsAllPageRowsSelected() ? true : table.getIsSomePageRowsSelected() ? 'indeterminate' : false
-              }
-              onCheckedChange={(checked) => table.toggleAllPageRowsSelected(checked === true)}
+              checked={checked}
+              onCheckedChange={(value) => table.toggleAllPageRowsSelected(value === true)}
             />
-          ) : null,
+          );
+        },
         cell: ({ row }) => (
           <Checkbox
             aria-label={t('table.selectRow', { name: resolveRowId(row.original, rowKey) })}
             checked={row.getIsSelected()}
-            onCheckedChange={(checked) => row.toggleSelected(checked === true)}
+            onCheckedChange={(value) => row.toggleSelected(value === true)}
           />
         ),
       }),
-      ...dataColumns,
-    ];
+      ...columns,
+    ]);
   }, [columnHelper, columns, rowKey, selectionMode, showSelection, t]);
 
   const table = useTable({
-    features: tableFeatureSet,
+    features: dataTableFeatures,
     data,
     columns: tableColumns,
     getRowId: (row) => resolveRowId(row, rowKey),
