@@ -1,5 +1,5 @@
 import type { RouteObject } from 'react-router-dom';
-import type { AppRoute } from './types';
+import type { AppRoute, RouteHandle } from './types';
 
 import { Outlet } from 'react-router-dom';
 
@@ -15,14 +15,16 @@ export function toRouteObjects(routes: AppRoute[]): RouteObject[] {
         return [];
       }
 
-      return [{ element: <Outlet />, handle: { title: route.meta.title }, children }];
+      const handle: RouteHandle = { title: route.meta.title };
+
+      return [{ element: <Outlet />, handle, children }];
     }
 
     if (!route.path || !route.path.startsWith('/')) {
       throw new Error(`Page route ${route.name} path must start with /`);
     }
 
-    const handle = { title: route.meta.title };
+    const handle: RouteHandle = { title: route.meta.title, path: route.path };
     const lazy = lazyPage(route.component);
 
     // `/` 是根布局的 index；其余去掉前导 /，成为相对 path

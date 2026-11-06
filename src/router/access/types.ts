@@ -12,3 +12,8 @@ export interface AppRoute {
   meta: AppRouteMeta;
   children?: AppRoute[];
 }
+
+export interface RouteHandle {
+  title: string;
+  path?: string;
+}

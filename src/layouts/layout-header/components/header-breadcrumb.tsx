@@ -1,36 +1,55 @@
-import { toast } from 'sonner';
+import type { RouteHandle } from '@/router/access/types';
+
+import { Fragment } from 'react';
+import { Link, useMatches } from 'react-router-dom';
 
 import {
   Breadcrumb,
   BreadcrumbItem,
+  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 
+function CrumbContent({ crumb, current }: { crumb: RouteHandle; current: boolean }) {
+  if (current) {
+    return <BreadcrumbPage>{crumb.title}</BreadcrumbPage>;
+  }
+
+  if (!crumb.path) {
+    return crumb.title;
+  }
+
+  return (
+    <BreadcrumbLink asChild>
+      <Link to={crumb.path}>{crumb.title}</Link>
+    </BreadcrumbLink>
+  );
+}
+
 export function HeaderBreadcrumb() {
-  /**
-   * 可以返回到当前路由，若是当前路由没有重定向直接返回到404
-   */
-  const breadCrumbClick = (path: string) => {
-    toast.success(path);
-  };
+  const crumbs = useMatches().flatMap((match) => {
+    const handle = match.handle as RouteHandle | undefined;
+
+    if (!handle) {
+      return [];
+    }
+
+    return [handle];
+  });
 
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        <BreadcrumbItem className="cursor-pointer" onClick={() => breadCrumbClick('/')}>
-          顶级路由
-        </BreadcrumbItem>
-
-        <BreadcrumbSeparator />
-
-        <BreadcrumbItem className="cursor-pointer" onClick={() => breadCrumbClick('/sub')}>
-          子路由
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-
-        <BreadcrumbPage onClick={() => breadCrumbClick('/more')}>更多路由</BreadcrumbPage>
+        {crumbs.map((crumb, index) => (
+          <Fragment key={`${crumb.path ?? crumb.title}-${index}`}>
+            {index > 0 ? <BreadcrumbSeparator /> : null}
+            <BreadcrumbItem>
+              <CrumbContent crumb={crumb} current={index === crumbs.length - 1} />
+            </BreadcrumbItem>
+          </Fragment>
+        ))}
       </BreadcrumbList>
     </Breadcrumb>
   );
