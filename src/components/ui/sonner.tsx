@@ -5,15 +5,16 @@ import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
 import { useThemePreferencesStore } from '@/store/preferences/theme-preferences';
 
-function resolveToasterTheme(
-  colorScheme: 'light' | 'dark' | 'system',
-  osPrefersDark: boolean
-): NonNullable<ToasterProps['theme']> {
-  if (colorScheme === 'system') {
-    return osPrefersDark ? 'dark' : 'light';
+function resolveToasterTheme(colorScheme: string, osPrefersDark: boolean): NonNullable<ToasterProps['theme']> {
+  if (colorScheme === 'dark') {
+    return 'dark';
   }
 
-  return colorScheme;
+  if (colorScheme === 'light') {
+    return 'light';
+  }
+
+  return osPrefersDark ? 'dark' : 'light';
 }
 
 const Toaster = ({ ...props }: ToasterProps) => {

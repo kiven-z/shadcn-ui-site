@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar';
-import { siteConfig } from '@/config/site';
+import { APP_CONFIG } from '@/config/app-config';
 import { LayoutSidebarNavMain } from '@/layouts/layout-sidebar/components/nav-main';
 import { LayoutSidebarNavUser } from '@/layouts/layout-sidebar/components/nav-user';
 import { useDirectionPreferencesStore } from '@/store/preferences/direction-preferences';
@@ -24,11 +24,16 @@ export function LayoutSidebar() {
   const tooltipSide = direction === 'rtl' ? 'left' : 'right';
 
   return (
-    <Sidebar collapsible={layout} dir={direction} side={direction === 'rtl' ? 'right' : 'left'} variant="inset">
+    <Sidebar
+      collapsible={layout === 'offcanvas' ? 'offcanvas' : 'icon'}
+      dir={direction}
+      side={direction === 'rtl' ? 'right' : 'left'}
+      variant="inset"
+    >
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild size="lg" tooltip={{ children: siteConfig.name, side: tooltipSide }}>
+            <SidebarMenuButton asChild size="lg" tooltip={{ children: APP_CONFIG.name, side: tooltipSide }}>
               <Link to="/">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                   <span
@@ -37,8 +42,8 @@ export function LayoutSidebar() {
                   />
                 </div>
                 <div className="grid flex-1 text-start text-sm leading-tight">
-                  <span className="truncate font-medium">{siteConfig.name}</span>
-                  <span className="truncate text-xs">{siteConfig.description}</span>
+                  <span className="truncate font-medium">{APP_CONFIG.name}</span>
+                  <span className="truncate text-xs">{APP_CONFIG.description}</span>
                 </div>
               </Link>
             </SidebarMenuButton>

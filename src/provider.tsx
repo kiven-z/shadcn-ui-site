@@ -13,7 +13,7 @@ export function Provider({ children }: { children: ReactNode }) {
 
   return (
     <I18nextProvider i18n={i18n}>
-      <DirectionProvider dir={direction}>
+      <DirectionProvider dir={direction === 'rtl' ? 'rtl' : 'ltr'}>
         <TooltipProvider>
           <DialogProvider>{children}</DialogProvider>
         </TooltipProvider>

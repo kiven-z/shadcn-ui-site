@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
-import { siteConfig } from '@/config/site';
+import { APP_CONFIG } from '@/config/app-config';
 import { usePreferencesDrawer } from '@/layouts/_shared/preferences-drawer';
 import { useDirectionPreferencesStore } from '@/store/preferences/direction-preferences';
 
@@ -26,7 +26,7 @@ export function LayoutSidebarNavUser() {
   const direction = useDirectionPreferencesStore((state) => state.direction);
   const menuSide = isMobile ? 'bottom' : direction === 'rtl' ? 'left' : 'right';
 
-  const { name, email } = siteConfig.user;
+  const { name, email } = APP_CONFIG.user;
   const initials = name.slice(0, 2).toUpperCase();
 
   return (

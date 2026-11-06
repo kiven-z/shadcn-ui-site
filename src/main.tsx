@@ -5,7 +5,7 @@ import App from './App.tsx';
 import { Provider } from './provider.tsx';
 
 import '@/app/i18n';
-import { applyHydratedUiPreferences } from '@/core/preferences/runtime/apply';
+import { applyHydratedUiPreferences } from '@/core/preferences/apply';
 import '@/styles/globals.css';
 
 async function bootstrap() {

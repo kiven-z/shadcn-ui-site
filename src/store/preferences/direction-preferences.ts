@@ -1,17 +1,13 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { DEFAULT_DIRECTION, DIRECTION_ITEMS, type DirectionType } from '@/config/locale-config';
+import { APP_CONFIG } from '@/config/app-config';
 
-const DIRECTION_SET = new Set<string>(DIRECTION_ITEMS.map((item) => item.id));
-
-function isDirection(value: unknown): value is DirectionType {
-  return typeof value === 'string' && DIRECTION_SET.has(value);
-}
+const DIRECTION_SET = new Set<string>(APP_CONFIG.directionItems.map((item) => item.id));
 
 interface DirectionPreferencesState {
   /** 文档方向 */
-  direction: DirectionType;
+  direction: string;
   /** 设置文档方向 */
   setDirection: (value: string) => void;
   /** 应用方向到 DOM */
@@ -22,10 +18,10 @@ interface DirectionPreferencesState {
 export const useDirectionPreferencesStore = create<DirectionPreferencesState>()(
   persist(
     (set, get) => ({
-      direction: DEFAULT_DIRECTION,
+      direction: APP_CONFIG.directionItems[0].id,
 
       setDirection: (value) => {
-        if (!isDirection(value)) {
+        if (!DIRECTION_SET.has(value)) {
           return;
         }
 

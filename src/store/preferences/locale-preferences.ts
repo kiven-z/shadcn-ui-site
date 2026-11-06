@@ -2,17 +2,13 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { i18n } from '@/app/i18n';
-import { DEFAULT_LOCALE, LOCALES, type LocaleType } from '@/config/locale-config';
+import { APP_CONFIG } from '@/config/app-config';
 
-const LOCALE_SET = new Set<string>(LOCALES.map((item) => item.locale));
-
-function isLocale(value: unknown): value is LocaleType {
-  return typeof value === 'string' && LOCALE_SET.has(value);
-}
+const LOCALE_SET = new Set<string>(APP_CONFIG.locales.map((item) => item.locale));
 
 interface LocalePreferencesState {
   /** 界面语言 */
-  locale: LocaleType;
+  locale: string;
   /** 设置界面语言 */
   setLocale: (value: string) => void;
   /** 应用语言到 i18n 与 DOM */
@@ -23,10 +19,10 @@ interface LocalePreferencesState {
 export const useLocalePreferencesStore = create<LocalePreferencesState>()(
   persist(
     (set, get) => ({
-      locale: DEFAULT_LOCALE,
+      locale: APP_CONFIG.locales[0].locale,
 
       setLocale: (value) => {
-        if (!isLocale(value)) {
+        if (!LOCALE_SET.has(value)) {
           return;
         }
 

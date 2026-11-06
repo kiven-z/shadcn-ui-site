@@ -1,21 +1,15 @@
-import type { ColorScheme } from '@/config/ui-config';
-
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { THEME_DEFAULT_COLOR_SCHEME } from '@/config/ui-config';
+import { APP_CONFIG } from '@/config/app-config';
 
-const COLOR_SCHEMES = new Set<ColorScheme>(['light', 'dark', 'system']);
+const COLOR_SCHEMES = new Set(APP_CONFIG.themes.map((item) => item.id));
 
 let stopSystemThemeWatch: (() => void) | null = null;
 
-function isColorScheme(value: unknown): value is ColorScheme {
-  return typeof value === 'string' && COLOR_SCHEMES.has(value as ColorScheme);
-}
-
 interface ThemePreferencesState {
   /** 颜色方案：浅色 / 深色 / 跟随系统 */
-  colorScheme: ColorScheme;
+  colorScheme: string;
   /** OS 是否偏好深色（运行时信号，不落盘） */
   osPrefersDark: boolean;
   /** 设置颜色方案 */
@@ -30,11 +24,11 @@ interface ThemePreferencesState {
 export const useThemePreferencesStore = create<ThemePreferencesState>()(
   persist(
     (set, get) => ({
-      colorScheme: THEME_DEFAULT_COLOR_SCHEME,
+      colorScheme: APP_CONFIG.defaultColorScheme,
       osPrefersDark: globalThis.matchMedia?.('(prefers-color-scheme: dark)')?.matches ?? false,
 
       setColorScheme: (value) => {
-        if (!isColorScheme(value)) {
+        if (!COLOR_SCHEMES.has(value)) {
           return;
         }
 

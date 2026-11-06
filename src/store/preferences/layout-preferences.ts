@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { DEFAULT_LAYOUT_MODE, LAYOUTS } from '@/config/ui-config';
+import { APP_CONFIG } from '@/config/app-config';
 
 function isLayoutMode(value: string) {
-  const LAYOUT_MODE_SET = new Set<string>(LAYOUTS.map((item) => item.id));
+  const LAYOUT_MODE_SET = new Set<string>(APP_CONFIG.layouts.map((item) => item.id));
 
   return LAYOUT_MODE_SET.has(value);
 }
@@ -20,7 +20,7 @@ interface LayoutPreferencesState {
 export const useLayoutPreferencesStore = create<LayoutPreferencesState>()(
   persist(
     (set) => ({
-      layout: DEFAULT_LAYOUT_MODE,
+      layout: APP_CONFIG.layouts[0].id,
 
       setLayout: (value) => {
         if (!isLayoutMode(value)) {

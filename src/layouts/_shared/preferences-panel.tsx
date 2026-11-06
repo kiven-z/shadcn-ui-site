@@ -13,8 +13,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { DIRECTION_ITEMS, LOCALES } from '@/config/locale-config';
-import { LAYOUTS, THEMES } from '@/config/ui-config';
+import { APP_CONFIG } from '@/config/app-config';
 import { useDirectionPreferencesStore } from '@/store/preferences/direction-preferences';
 import { useDisplayPreferencesStore } from '@/store/preferences/display-preferences';
 import { useLayoutPreferencesStore } from '@/store/preferences/layout-preferences';
@@ -56,12 +55,12 @@ export function PreferencesPanel() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button aria-label={t('panel.locale.title')} variant="outline">
-              {LOCALES.find((l) => l.locale === locale)?.label}
+              {APP_CONFIG.locales.find((l) => l.locale === locale)?.label}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuRadioGroup value={locale} onValueChange={setLocale}>
-              {LOCALES.map(({ locale: localeId, label }) => (
+              {APP_CONFIG.locales.map(({ locale: localeId, label }) => (
                 <DropdownMenuRadioItem key={localeId} value={localeId}>
                   {label}
                 </DropdownMenuRadioItem>
@@ -82,7 +81,7 @@ export function PreferencesPanel() {
           variant="outline"
           onValueChange={setColorScheme}
         >
-          {THEMES.map(({ id, icon }) => (
+          {APP_CONFIG.themes.map(({ id, icon }) => (
             <ToggleGroupItem key={id} className="flex-1" value={id}>
               <Icon className="size-4" name={icon} />
               {t(`panel.theme.${id}`)}
@@ -102,7 +101,7 @@ export function PreferencesPanel() {
           variant="outline"
           onValueChange={setLayout}
         >
-          {LAYOUTS.map(({ id, icon: LayoutIcon }) => (
+          {APP_CONFIG.layouts.map(({ id, icon: LayoutIcon }) => (
             // h-auto! flex-1 flex-col gap-1.5 py-2 text-center whitespace-normal!
             <ToggleGroupItem
               key={id}
@@ -127,7 +126,7 @@ export function PreferencesPanel() {
           variant="outline"
           onValueChange={setDirection}
         >
-          {DIRECTION_ITEMS.map(({ id, icon }) => (
+          {APP_CONFIG.directionItems.map(({ id, icon }) => (
             <ToggleGroupItem key={id} className="flex-1" value={id}>
               <Icon className="size-4" name={icon} />
               {t(`panel.direction.${id}`)}
